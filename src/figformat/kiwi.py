@@ -91,6 +91,7 @@ class KiwiDecoder:
     def decode(self, reader, root):
         kw = KiwiReader(reader)
         root_type = [t for t in self.schema.types if t["name"] == root][0]
+
         return self._decode_message(kw, root_type)
 
     def _decode_message(self, kw, type):
@@ -161,6 +162,8 @@ def decode(reader, type_converters):
     size = struct.unpack("<I", segment_header)[0]
     data = io.BytesIO(zlib.decompress(reader.read(size), wbits=-15))
     schema = KiwiSchema(data)
+
+    # print(schema.types)
 
     segment_header = reader.read(4)
     size = struct.unpack("<I", segment_header)[0]
